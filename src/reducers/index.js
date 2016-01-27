@@ -11,6 +11,8 @@ import { roomReducer } from './RoomReducer';
 import { routeReducer } from './RouteReducer';
 import { snackListReducer as snackList } from './SnackListReducer';
 import { userReducer } from './UserReducer';
+import { videoReducer } from './VideoReducer';
+import { videoListReducer } from './VideoListReducer';
 
 export const rootReducer = combineReducers({
     confirmList: confirmListReducer,
@@ -25,4 +27,6 @@ export const rootReducer = combineReducers({
     route: routeReducer,
     snackList,
     user: userReducer,
+    video: videoReducer,
+    videoList: videoListReducer,
 });

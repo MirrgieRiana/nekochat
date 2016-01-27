@@ -9,6 +9,38 @@ import { FROM_HEIGHT } from '../components/MessageForm';
 import { MessageFormContainer } from '../containers/MessageFormContainer';
 import { MessageList } from '../containers/MessageList';
 
+export class Video extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        this.setSource();
+    }
+    componentDidUpdate() {
+        this.setSource();
+    }
+
+    setSource() {
+        const {
+            stream,
+        } = this.props;
+        const video = findDOMNode(this.refs.video);
+
+        video.autoplay = true;
+        video.src = window.URL.createObjectURL(stream);
+    }
+
+    render() {
+        const Style = {
+            border: '2px solid black',
+            height: 180,
+        };
+
+        return <video ref="video" style={Style} />;
+    }
+}
+
 export class Chat extends Component {
     constructor(props) {
         super(props);
@@ -43,9 +75,13 @@ export class Chat extends Component {
             dom,
             messageForm,
             messageList,
+            videoList,
             title,
             user,
             setRoute,
+            createVideo,
+            endVideo,
+            video,
         } = this.props;
         const {
             leftNav,
@@ -60,6 +96,22 @@ export class Chat extends Component {
             },
             FormList: {
                 flex: `0 0 ${FROM_HEIGHT * messageForm.length}px`,
+            },
+            List: {
+                flex: '1 1 auto',
+                overflow: 'hidden',
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch',
+            },
+            Videos: {
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                overflow: 'auto',
+            },
+            Loader: {
+                textAlign: 'center',
+                overflow: 'hidden',
             },
         };
 
@@ -76,6 +128,25 @@ export class Chat extends Component {
                 <AppBar
                     title={title || 'NekoChat'}
                     onLeftIconButtonTouchTap={() => this.toggleLeftNav()} />
+                <div
+                    style={Styles.Videos}>
+                    {video
+                        ? (
+                            <button onTouchTap={endVideo}>
+                                x
+                            </button>
+                        )
+                        : (
+                            <button onTouchTap={createVideo}>
+                                +
+                            </button>
+                        )
+                    }
+                    {video &&  <Video {...video} onTouchTap={endVideo} />}
+                    {videoList.map((v, i) => (
+                        <Video {...v} key={i} />
+                    ))}
+                </div>
                 <MessageList />
                 <div style={Styles.FormList}>
                     {messageForm.map((form) => (

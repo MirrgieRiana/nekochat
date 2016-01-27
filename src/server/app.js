@@ -48,5 +48,7 @@ app.get('/view/:roomId', (req, res, next) => {
 });
 
 app.get(['/', '/:roomId'], (req, res) => {
-    res.render('index');
+    res.render('index', {
+        peerjs: config.get('peerjs'),
+    });
 });

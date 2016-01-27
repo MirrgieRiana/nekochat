@@ -1,4 +1,4 @@
-import { logger } from '../logger';
+import { getLogger } from '../logger';
 
 export class Dispatcher {
     constructor(socket, root) {
@@ -6,9 +6,10 @@ export class Dispatcher {
         this.socket = socket;
         this.user = socket.user;
         this.user_id = socket.user.id;
+        this.logger = getLogger(`[SOCKET${this.socket.id}]`);
     }
 
-    dispatch(action, to = null, excludeSelf = false) {
+    emit(action, to = null, excludeSelf = false) {
         const clientAction = {
             ...action,
             server: false,
@@ -25,7 +26,12 @@ export class Dispatcher {
             }
         }
 
-        return (this.root || this).onDispatch(clientAction);
+        return clientAction;
+    }
+
+    dispatch(action, to = null, excludeSelf = false) {
+        return (this.root || this)
+            .onDispatch(this.emit(action, to, excludeSelf));
     }
 
     onDispatch() {
@@ -33,7 +39,7 @@ export class Dispatcher {
             `${this.constructor.name}.onDispatch must be overrided`
         );
 
-        logger.error(error);
+        this.logger.error(error);
         return Promise.reject(error);
     }
 }

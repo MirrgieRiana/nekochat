@@ -23,6 +23,7 @@
         "hostname": "127.0.0.1",
         "port": 4001
     },
+    "peerjs": null,
     "server": {
         "host": "localhost",
         "port": 8080

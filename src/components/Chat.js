@@ -5,6 +5,7 @@ import {
     MenuItem,
 } from 'material-ui';
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import { FROM_HEIGHT } from '../components/MessageForm';
 import { MessageFormContainer } from '../containers/MessageFormContainer';
 import { MessageList } from '../containers/MessageList';
